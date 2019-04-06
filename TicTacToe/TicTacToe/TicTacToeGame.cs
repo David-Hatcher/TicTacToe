@@ -24,18 +24,18 @@ namespace TicTacToe
             "-","-","-","-","-","-","-","-","-"
         };
 
-        //Dictionary<string, string[]> possibleWins = new Dictionary<string, string[]>
-        //{
-        //    {"topRow",            new string[] {TicTacToeBoardModel[0],TicTacToeBoardModel[1],TicTacToeBoardModel[2] } },
-        //    {"middleRow" ,        new string[] {TicTacToeBoardModel[3],TicTacToeBoardModel[4],TicTacToeBoardModel[5] } },
-        //    {"bottomRow" ,        new string[] {TicTacToeBoardModel[6],TicTacToeBoardModel[7],TicTacToeBoardModel[8] } },
-        //    {"firstColumn" ,      new string[] {TicTacToeBoardModel[0],TicTacToeBoardModel[3],TicTacToeBoardModel[6] } },
-        //    {"secondColumn" ,     new string[] {TicTacToeBoardModel[1],TicTacToeBoardModel[4],TicTacToeBoardModel[7] } },
-        //    {"thirdColumn" ,      new string[] {TicTacToeBoardModel[2],TicTacToeBoardModel[5],TicTacToeBoardModel[8] } },
-        //    {"downwardDiagonal" , new string[] {TicTacToeBoardModel[0],TicTacToeBoardModel[4],TicTacToeBoardModel[8] } },
-        //    {"upwardDiagonal" ,   new string[] {TicTacToeBoardModel[6],TicTacToeBoardModel[4],TicTacToeBoardModel[2] } },
-        //};
-        Dictionary<string, int[]> possibleWins = new Dictionary<string, int[]>
+        Dictionary<string, string[]> possibleWins = new Dictionary<string, string[]>
+        {
+            {"topRow",            new string[] {TicTacToeBoardModel[0],TicTacToeBoardModel[1],TicTacToeBoardModel[2] } },
+            {"middleRow" ,        new string[] {TicTacToeBoardModel[3],TicTacToeBoardModel[4],TicTacToeBoardModel[5] } },
+            {"bottomRow" ,        new string[] {TicTacToeBoardModel[6],TicTacToeBoardModel[7],TicTacToeBoardModel[8] } },
+            {"firstColumn" ,      new string[] {TicTacToeBoardModel[0],TicTacToeBoardModel[3],TicTacToeBoardModel[6] } },
+            {"secondColumn" ,     new string[] {TicTacToeBoardModel[1],TicTacToeBoardModel[4],TicTacToeBoardModel[7] } },
+            {"thirdColumn" ,      new string[] {TicTacToeBoardModel[2],TicTacToeBoardModel[5],TicTacToeBoardModel[8] } },
+            {"downwardDiagonal" , new string[] {TicTacToeBoardModel[0],TicTacToeBoardModel[4],TicTacToeBoardModel[8] } },
+            {"upwardDiagonal" ,   new string[] {TicTacToeBoardModel[6],TicTacToeBoardModel[4],TicTacToeBoardModel[2] } },
+        };
+        Dictionary<string, int[]> possibleWinsValues = new Dictionary<string, int[]>
         {
             {"topRow",            new int[] {0,1,2} },
             {"middleRow" ,        new int[] {3,4,5} },
@@ -108,60 +108,48 @@ namespace TicTacToe
             bool winnerBool = false;
             string[] xWins = { "X", "X", "X" };
             string[] oWins = { "O", "O", "O" };
-            foreach (int[] possibleWin in possibleWins.Values)
+            foreach (string[] possibleWin in possibleWins.Values)
             {
-                string[] TicTacToeBoardModelWinsCheck = new string[3];
-                int i = 0;
-                foreach (int slot in possibleWin)
-                {
-                    TicTacToeBoardModelWinsCheck[i] = TicTacToeBoardModel[slot];
-                    i += 1;
-                }
-                if (TicTacToeBoardModelWinsCheck == xWins)
+
+                if (possibleWin == xWins)
                 {
                     winnerBool = true;
                     winner = "X";
                 }
-                else if (TicTacToeBoardModelWinsCheck == oWins)
+                else if (possibleWin == oWins)
                 {
                     winnerBool = true;
                     winner = "O";
                 }
-                Console.WriteLine(string.Join(" ", TicTacToeBoardModelWinsCheck));
+                Console.WriteLine(string.Join(" ", possibleWin));
             }
             return winnerBool;
         }
-
         public bool canComputerWin()
         {
+            string[][] winConditions = new string[3][];
             bool computerCanWin = false;
-            string[][] CloseToWin = new string[3][];
+
             if (player == "X")
             {
-                CloseToWin[0] = new string[] { "O", "O", "-" };
-                CloseToWin[1] = new string[] { "O", "-", "O" };
-                CloseToWin[2] = new string[] { "-", "O", "O" };
+                winConditions[0] = new string[] { "X", "X", "-" };
+                winConditions[1] = new string[] { "X", "-", "X" };
+                winConditions[2] = new string[] { "-", "X", "x" };
             }
             else
             {
-                CloseToWin[0] = new string[] { "X", "X", "-" };
-                CloseToWin[1] = new string[] { "X", "-", "X" };
-                CloseToWin[2] = new string[] { "-", "X", "X" };
-            };
-            foreach  (string[] winOption in CloseToWin)
+                winConditions[0] = new string[] { "O", "O", "-" };
+                winConditions[1] = new string[] { "O", "-", "O" };
+                winConditions[2] = new string[] { "-", "O", "O" };
+            }
+            foreach (string[] winCon in winConditions)
             {
-                foreach (int[] rowToCheck in possibleWins.Values)
+                foreach (string rowToCheck in )
                 {
-                    if ([TicTacToeBoardModel[rowToCheck] == winOption)
+
                 }
             }
             return computerCanWin;
-        }
-
-        public int whereToPlacePiece()
-        {
-
-
         }
     }
 }
