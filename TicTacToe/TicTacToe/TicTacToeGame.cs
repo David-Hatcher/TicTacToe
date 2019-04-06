@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 
 
@@ -10,14 +11,40 @@ namespace TicTacToe
 {
     public class TicTacToeGame
     {
+        public string player;
+        public string winner;
+
         string[] TicTacToeBoard =
         {
             "0","1","2","3","4","5","6","7","8"
         };
 
-        string[] TicTacToeBoardModel =
-{
+        static string[] TicTacToeBoardModel =
+        {
             "-","-","-","-","-","-","-","-","-"
+        };
+
+        //Dictionary<string, string[]> possibleWins = new Dictionary<string, string[]>
+        //{
+        //    {"topRow",            new string[] {TicTacToeBoardModel[0],TicTacToeBoardModel[1],TicTacToeBoardModel[2] } },
+        //    {"middleRow" ,        new string[] {TicTacToeBoardModel[3],TicTacToeBoardModel[4],TicTacToeBoardModel[5] } },
+        //    {"bottomRow" ,        new string[] {TicTacToeBoardModel[6],TicTacToeBoardModel[7],TicTacToeBoardModel[8] } },
+        //    {"firstColumn" ,      new string[] {TicTacToeBoardModel[0],TicTacToeBoardModel[3],TicTacToeBoardModel[6] } },
+        //    {"secondColumn" ,     new string[] {TicTacToeBoardModel[1],TicTacToeBoardModel[4],TicTacToeBoardModel[7] } },
+        //    {"thirdColumn" ,      new string[] {TicTacToeBoardModel[2],TicTacToeBoardModel[5],TicTacToeBoardModel[8] } },
+        //    {"downwardDiagonal" , new string[] {TicTacToeBoardModel[0],TicTacToeBoardModel[4],TicTacToeBoardModel[8] } },
+        //    {"upwardDiagonal" ,   new string[] {TicTacToeBoardModel[6],TicTacToeBoardModel[4],TicTacToeBoardModel[2] } },
+        //};
+        Dictionary<string, int[]> possibleWins = new Dictionary<string, int[]>
+        {
+            {"topRow",            new int[] {0,1,2} },
+            {"middleRow" ,        new int[] {3,4,5} },
+            {"bottomRow" ,        new int[] {6,7,8} },
+            {"firstColumn" ,      new int[] {0,3,6} },
+            {"secondColumn" ,     new int[] {1,4,7} },
+            {"thirdColumn" ,      new int[] {2,5,8} },
+            {"downwardDiagonal" , new int[] {0,4,8} },
+            {"upwardDiagonal" ,   new int[] {6,4,2} },
         };
 
         public void DisplayBoard()
@@ -38,18 +65,102 @@ namespace TicTacToe
                 }
             }
         }
-        public void PlayerSelect()
+
+        public void PlayerSelectPiece()
         {
             Console.WriteLine("Which piece would you like to play? (X/O)");
-            string player = Console.ReadLine().ToUpper();
+            string playerChoice = Console.ReadLine().ToUpper();
+            if (playerChoice == "X" || playerChoice == "O")
+            {
+                player = playerChoice;
+            }
+            else
+            {
+                PlayerSelectPiece();
+            }
         }
+
         public int SelectSpace()
         {
+            int space = 0;
             Console.WriteLine("Where would you like to place your piece? (type a number you see above)");
-            return Convert.ToInt32(Console.ReadLine());
+            int choice = (int)Convert.ToDecimal(Console.ReadLine());
+            if (choice >= 0 && choice <= 8 && TicTacToeBoardModel[choice] == "-")
+            {
+                space = choice;
+            }
+            else
+            {
+                Console.WriteLine("Please select an availible space above.");
+                space = SelectSpace();
+            }
+            return space;
         }
-        public void PlacePeice()
+
+        public void PlacePeice(int space)
         {
+            TicTacToeBoard[space] = player;
+            TicTacToeBoardModel[space] = player;
+        }
+
+        public bool isWinner()
+        {
+            bool winnerBool = false;
+            string[] xWins = { "X", "X", "X" };
+            string[] oWins = { "O", "O", "O" };
+            foreach (int[] possibleWin in possibleWins.Values)
+            {
+                string[] TicTacToeBoardModelWinsCheck = new string[3];
+                int i = 0;
+                foreach (int slot in possibleWin)
+                {
+                    TicTacToeBoardModelWinsCheck[i] = TicTacToeBoardModel[slot];
+                    i += 1;
+                }
+                if (TicTacToeBoardModelWinsCheck == xWins)
+                {
+                    winnerBool = true;
+                    winner = "X";
+                }
+                else if (TicTacToeBoardModelWinsCheck == oWins)
+                {
+                    winnerBool = true;
+                    winner = "O";
+                }
+                Console.WriteLine(string.Join(" ", TicTacToeBoardModelWinsCheck));
+            }
+            return winnerBool;
+        }
+
+        public bool canComputerWin()
+        {
+            bool computerCanWin = false;
+            string[][] CloseToWin = new string[3][];
+            if (player == "X")
+            {
+                CloseToWin[0] = new string[] { "O", "O", "-" };
+                CloseToWin[1] = new string[] { "O", "-", "O" };
+                CloseToWin[2] = new string[] { "-", "O", "O" };
+            }
+            else
+            {
+                CloseToWin[0] = new string[] { "X", "X", "-" };
+                CloseToWin[1] = new string[] { "X", "-", "X" };
+                CloseToWin[2] = new string[] { "-", "X", "X" };
+            };
+            foreach  (string[] winOption in CloseToWin)
+            {
+                foreach (int[] rowToCheck in possibleWins.Values)
+                {
+                    if ([TicTacToeBoardModel[rowToCheck] == winOption)
+                }
+            }
+            return computerCanWin;
+        }
+
+        public int whereToPlacePiece()
+        {
+
 
         }
     }
