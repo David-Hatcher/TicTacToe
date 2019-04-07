@@ -12,16 +12,21 @@ namespace TicTacToe
     public class TicTacToeGame
     {
         public string player;
+        public string computer ="X";
         public string winner;
 
         string[] TicTacToeBoard =
         {
-            "0","1","2","3","4","5","6","7","8"
+            "0","1","2",
+            "3","4","5",
+            "6","7","8"
         };
 
         static string[] TicTacToeBoardModel =
         {
-            "-","-","-","-","-","-","-","-","-"
+            "X","-","X",
+            "-","-","-",
+            "-","-","-"
         };
 
         Dictionary<string, string[]> possibleWins = new Dictionary<string, string[]>
@@ -70,9 +75,15 @@ namespace TicTacToe
         {
             Console.WriteLine("Which piece would you like to play? (X/O)");
             string playerChoice = Console.ReadLine().ToUpper();
-            if (playerChoice == "X" || playerChoice == "O")
+            if (playerChoice == "X")
             {
                 player = playerChoice;
+                computer = "0";
+            }
+            else if (playerChoice == "O")
+            {
+                player = playerChoice;
+                computer = "X";
             }
             else
             {
@@ -125,31 +136,59 @@ namespace TicTacToe
             }
             return winnerBool;
         }
-        public bool canComputerWin()
-        {
-            string[][] winConditions = new string[3][];
-            bool computerCanWin = false;
-
-            if (player == "X")
+        public string[][] canPieceWin(string piece)
+        {            
+            string[][] someoneCanWin = new string[4][];
+            string[][] winConditions =
             {
-                winConditions[0] = new string[] { "X", "X", "-" };
-                winConditions[1] = new string[] { "X", "-", "X" };
-                winConditions[2] = new string[] { "-", "X", "x" };
-            }
-            else
-            {
-                winConditions[0] = new string[] { "O", "O", "-" };
-                winConditions[1] = new string[] { "O", "-", "O" };
-                winConditions[2] = new string[] { "-", "O", "O" };
-            }
+                new string[] { piece, piece, "-" },
+                new string[] { piece, "-", piece },
+                new string[] { "-", piece, piece }
+            };
+            someoneCanWin[0] = new string[] { "NO" };
             foreach (string[] winCon in winConditions)
             {
-                foreach (string rowToCheck in )
+                foreach (string rowToCheck in possibleWins.Keys)
                 {
-
+                    if (winCon.SequenceEqual(possibleWins[rowToCheck]))
+                    {
+                        someoneCanWin[0] = new string[] {piece};
+                        someoneCanWin[1] = winCon;
+                        someoneCanWin[2] = possibleWins[rowToCheck];
+                        someoneCanWin[3] = new string[] { rowToCheck };
+                    }
                 }
             }
-            return computerCanWin;
+            return someoneCanWin;
         }
+
+        public int someoneCanWinSpaceToTake(string[][] someoneCanWin)
+        {
+            string whoCanWin = someoneCanWin[0][0];
+            string rowToCheck = someoneCanWin[3][0];
+            int spaceToTake = 9;            
+                foreach (string slotBoard in someoneCanWin[2])
+                {
+                    if (slotBoard != whoCanWin)
+                    {
+                    foreach (string slotWin in someoneCanWin[2])
+                    {
+                        foreach (int slotOnBoard in possibleWinsValues[rowToCheck])
+                            {
+                                if (TicTacToeBoardModel[slotOnBoard] != whoCanWin)
+                                {
+                                    spaceToTake = slotOnBoard;
+                                }
+                            }
+                        }
+                    }
+                }            
+            return spaceToTake;
+        }
+
+        //public int noOneCanWinSpaceToTake()
+        //{
+
+        //}
     }
 }

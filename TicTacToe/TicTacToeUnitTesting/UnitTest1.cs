@@ -15,7 +15,6 @@ namespace TicTacToeUnitTesting
         [TestMethod]
         public void PlayerSelectTest()
         {
-
             Assert.AreEqual(tttg.PlayerSelect("x"), "X");
         }
     }
