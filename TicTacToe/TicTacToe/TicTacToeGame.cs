@@ -12,7 +12,7 @@ namespace TicTacToe
     public class TicTacToeGame
     {
         public string player;
-        public string computer ="X";
+        public string computer;
         public string winner;
 
         string[] TicTacToeBoard =
@@ -186,9 +186,58 @@ namespace TicTacToe
             return spaceToTake;
         }
 
-        //public int noOneCanWinSpaceToTake()
-        //{
+        public int NoOneCanWinSpaceToTake(string piece)
+        {
+            whichRowsHaveOneToken(piece);
+            return 1;
+        }
+        public List<string> whichRowsHaveOneToken(string piece)
+        {
+            List<string> possibleSelections = new List<string>();
+            string[][] winConditions =
+            {
+                new string[] { piece, "-", "-" },
+                new string[] { "-", "-", piece },
+                new string[] { "-", piece, "-" }
+            };
+            foreach (string row in possibleWins.Keys)
+            {
+                string[] rowValue = possibleWins[row];
 
-        //}
+                foreach (string[] winCondition in winConditions)
+                {
+                    if (rowValue == winCondition)
+                    {
+                        possibleSelections.Add(row);
+                    };
+                }
+
+            };
+            return possibleSelections;
+        }
+        public List<int> whichSlotHasMultipleHasMultipleOccurances(List<string> possibleSelections,string piece)
+        {
+            List<int> possibleSlots = new List<int>();
+
+            foreach (string rowName in possibleSelections)
+            {
+                string[] rowOnBoard = possibleWins[rowName];
+                int[] rowSlotValues = possibleWinsValues[rowName];
+                    for (int i = 0; i < rowOnBoard.Length; i++)
+                    {
+                        if (rowOnBoard[i] == "-")
+                        {
+                            possibleSlots.Add(rowSlotValues[i]);
+                        }
+                    }                
+            }
+
+            return possibleSlots;
+        }
+        public int whichSlotHasMostOccurances(List<int> possibleSlots)
+        {
+
+            return 1;
+        }
     }
 }
