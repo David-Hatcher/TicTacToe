@@ -236,8 +236,22 @@ namespace TicTacToe
         }
         public int whichSlotHasMostOccurances(List<int> possibleSlots)
         {
+            int[] occurances = new int[8] { 0, 0, 0, 0, 0, 0, 0, 0 };           
+            foreach (int slot in possibleSlots)
+            {
+                occurances[slot] += 1;
+            }
 
-            return 1;
+            int currentHighest = 0;
+
+            for (int i = 0; i <= occurances.Length; i++)
+            {
+                if (occurances[i] > currentHighest)
+                {
+                    currentHighest = occurances[i];
+                }
+            }
+            return currentHighest;
         }
     }
 }
